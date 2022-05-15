@@ -24,6 +24,12 @@ sh create_database.sh
 pip install -r requirements.txt 
 ```
 
+- Copy env variables
+
+```shell
+cp env.example .env
+```
+
 - Create migrations
 
 ```shell

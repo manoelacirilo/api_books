@@ -12,6 +12,9 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 
 from pathlib import Path
 
+from decouple import config
+from dj_database_url import parse as db_url
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -19,10 +22,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-cwqteymt&u*x-vntb3-#pl*g60p!bc@*41=l1*$8e53pk6d@&2'
+SECRET_KEY = config('SECRET_KEY')
+DEBUG = config('DEBUG', default=False, cast=bool)
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+AUTH_USER_MODEL = "users.User"
 
 ALLOWED_HOSTS = []
 
@@ -35,6 +38,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
+    'core',
+    'users'
 ]
 
 MIDDLEWARE = [
@@ -69,7 +75,10 @@ WSGI_APPLICATION = 'books.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
-
+DATABASES = {
+    "default": config("DATABASE_URL", cast=db_url),
+}
+DATABASES["default"]["ATOMIC_REQUESTS"] = True
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
