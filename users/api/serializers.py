@@ -45,3 +45,26 @@ class JwtTokenSerializer(TokenObtainPairSerializer):
 
         token['email'] = user.email
         return token
+
+
+class UpdateUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('name', 'image')
+        extra_kwargs = {
+            'name': {'required': True}
+        }
+
+    def update(self, instance, validated_data):
+        instance.name = validated_data['name']
+        instance.image = validated_data['image']
+
+        instance.save()
+
+        return instance
+
+
+class UserProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('id', 'name', 'email', 'image')
