@@ -7,6 +7,7 @@ from rest_framework.viewsets import GenericViewSet
 
 from core.api.serializers import BookSerializer
 from core.models import Book
+from core.permissions import UserVerified
 
 
 class CustomPaginator(PageNumberPagination):
@@ -18,6 +19,16 @@ class BookViewSet(ListModelMixin, GenericViewSet):
     queryset = Book.objects.all().filter(restricted=False)
     serializer_class = BookSerializer
     permission_classes = [IsAuthenticated]
+    pagination_class = CustomPaginator
+    filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
+    filterset_fields = ['year', 'author', 'genre']
+    search_fields = ['title', 'synopsis']
+
+
+class RestrictedBookViewSet(ListModelMixin, GenericViewSet):
+    queryset = Book.objects.all().filter(restricted=True)
+    serializer_class = BookSerializer
+    permission_classes = [IsAuthenticated, UserVerified]
     pagination_class = CustomPaginator
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
     filterset_fields = ['year', 'author', 'genre']
