@@ -27,7 +27,7 @@ DEBUG = config('DEBUG', default=False, cast=bool)
 
 AUTH_USER_MODEL = "users.User"
 
-ALLOWED_HOSTS = ['manoela-api-books.herokuapp.com']
+ALLOWED_HOSTS = ['manoela-api-books.herokuapp.com', '127.0.0.1']
 
 # Application definition
 
