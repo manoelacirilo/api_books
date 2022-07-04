@@ -1,5 +1,3 @@
-from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework.mixins import ListModelMixin
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAuthenticated
@@ -20,7 +18,6 @@ class BookViewSet(ListModelMixin, GenericViewSet):
     serializer_class = BookSerializer
     permission_classes = [IsAuthenticated]
     pagination_class = CustomPaginator
-    filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
     filterset_fields = ['year', 'author', 'genre']
     search_fields = ['title', 'synopsis']
 
@@ -30,6 +27,32 @@ class RestrictedBookViewSet(ListModelMixin, GenericViewSet):
     serializer_class = BookSerializer
     permission_classes = [IsAuthenticated, UserVerified]
     pagination_class = CustomPaginator
-    filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
     filterset_fields = ['year', 'author', 'genre']
     search_fields = ['title', 'synopsis']
+
+
+"""
+    def get_query(self):
+        id = self.request.query_params.get('id', None)
+        author = self.request.query_params.get('author', None)
+        genre = self.request.query_params.get('genre', None)
+        title = self.request.query_params.get('title', None)
+        synopsis = self.request.query_params.get('synpsis', None)
+        
+        if id:
+            queryset = Books.objects.filter(pk=id)
+            
+        if author:
+            queryset = queryset.filter(author__iexact=author)
+            
+        if genre:
+            queryset = queryset.filter(genre__iexact=genre)
+            
+        if title:
+            queryset = queryset.filter(title__iexact=title)
+            
+        if synopsis:
+            queryset = queryset.filter(synopsis__iexact=synopsis)
+            
+        return queryset
+"""
