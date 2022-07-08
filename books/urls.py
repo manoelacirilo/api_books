@@ -18,11 +18,13 @@ from django.contrib import admin
 from django.urls import path
 from rest_framework import routers
 
+from comments.api.viewsets import CommentViewSet
 from core.api.viewsets import BookViewSet, RestrictedBookViewSet
 
 router = routers.DefaultRouter()
 router.register(r'book', BookViewSet)
 router.register(r'restricted_book', RestrictedBookViewSet)
+router.register(r'comments', CommentViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),
